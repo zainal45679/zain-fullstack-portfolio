@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform, AnimatePresence, useAnimationFrame, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence, useAnimationFrame, useMotionValue, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { 
@@ -80,12 +80,12 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, type: "spring" } }
 };
 
-const rowVariants = {
+const rowVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
@@ -94,17 +94,17 @@ const rowVariants = {
   }
 };
 
-const cardVariantsLeft = {
+const cardVariantsLeft: Variants = {
   hidden: { opacity: 0, x: -50 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5, type: "spring", bounce: 0.2 } }
 };
 
-const cardVariantsRight = {
+const cardVariantsRight: Variants = {
   hidden: { opacity: 0, x: 50 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5, type: "spring", bounce: 0.2 } }
 };
 
-const dotVariants = {
+const dotVariants: Variants = {
   hidden: { scale: 0, opacity: 0, x: "-50%", y: "-50%" },
   visible: { scale: 1, opacity: 1, x: "-50%", y: "-50%", transition: { type: "spring", stiffness: 300, damping: 20 } }
 };

@@ -14,9 +14,11 @@ import {
   SiPython,
   SiWordpress,
   SiGithub,
-  SiTailwindcss
+  SiTailwindcss,
+  SiWhatsapp
 } from "react-icons/si";
-import { MdDesignServices } from "react-icons/md";
+import { FaLinkedin } from "react-icons/fa";
+import { MdDesignServices, MdPhone } from "react-icons/md";
 
 // Icons for marquee
 const tools = [
@@ -533,10 +535,10 @@ export default function Home() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6 }}
             >
-              <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="Project 1" />
+              <img src="/images/projects/optical.jpg" alt="Project 1" />
               <Link href="/projects/opticals" className="project-overlay">
                 <div className="project-top-row">
-                  <div className="project-title">OPTICALS</div>
+                  <div className="project-title">CHASMA OPTICALS</div>
                   <div className="project-arrow">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -557,7 +559,7 @@ export default function Home() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.15 }}
             >
-              <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Project 2" />
+              <img src="/images/projects/ztitch.jpeg" alt="Project 2" />
               <Link href="/projects/ztitch" className="project-overlay">
                 <div className="project-top-row">
                   <div className="project-title">ZTITCH ECOMMERCE</div>
@@ -858,15 +860,32 @@ export default function Home() {
                 Available Worldwide
               </div>
               
-              <a href="#contact" className="contact-pill-btn">
-                <div className="contact-pill-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginTop: '32px', flexWrap: 'wrap' }}>
+                <a href="#contact" className="contact-pill-btn" style={{ margin: 0 }}>
+                  <div className="contact-pill-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </div>
+                  Contact now
+                </a>
+                
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                    <SiWhatsapp size={20} />
+                  </a>
+                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                    <MdPhone size={20} />
+                  </a>
+                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                    <FaLinkedin size={20} />
+                  </a>
+                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                    <SiGithub size={20} />
+                  </a>
                 </div>
-                Contact now
-              </a>
+              </div>
             </motion.div>
             
             {/* Right Column: Form */}

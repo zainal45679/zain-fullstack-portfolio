@@ -2,34 +2,23 @@ import Link from 'next/link';
 
 export default function BrandingGallery() {
   return (
-    <div style={{ backgroundColor: '#050505', color: '#fff', minHeight: '100vh', padding: '40px 48px' }}>
+    <div className="branding-page-wrapper">
       
       {/* Header Row */}
-      <div style={{ marginBottom: '60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link href="/#projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#888', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 400, letterSpacing: '0.05em', textTransform: 'uppercase', transition: 'color 0.3s' }}>
-          ← Back
+      <div style={{ marginBottom: '32px' }}>
+        <Link href="/#projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-orange)', textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem', marginBottom: '16px' }}>
+          ← Back to Portfolio
         </Link>
-        <div style={{ fontSize: '0.85rem', color: '#666', letterSpacing: '0.05em' }}>
-          A-Z BRAND IDENTITY
-        </div>
-      </div>
-      
-      <div style={{ marginBottom: '80px', maxWidth: '800px' }}>
-        <h1 style={{ fontSize: '4.5rem', fontWeight: 800, margin: 0, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '24px' }}>
-          BRANDING <br/><span style={{ color: 'var(--accent-orange)' }}>&</span> DESIGN
+        <h1 style={{ fontSize: '3rem', fontWeight: 800, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '16px' }}>
+          BRANDING <span style={{ color: 'var(--accent-orange)' }}>&</span> DESIGN
         </h1>
-        <p style={{ fontSize: '1.05rem', color: '#888', margin: 0, lineHeight: 1.6, fontWeight: 300 }}>
+        <p style={{ fontSize: '1.05rem', color: '#888', margin: 0, lineHeight: 1.6, fontWeight: 300, maxWidth: '800px' }}>
           Complete A-Z brand identity design including logo conceptualization, letterheads, typography selection, and brand guidelines for various forward-thinking companies.
         </p>
       </div>
       
-      {/* Alternating Masonry Gallery (4 Columns) */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(4, 1fr)', 
-        gap: '24px',
-        alignItems: 'start'
-      }}>
+      {/* Alternating Masonry Gallery */}
+      <div className="branding-gallery-grid">
         
         {/* Column 1: Landscape then Portrait */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

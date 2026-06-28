@@ -1,25 +1,44 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 export default function ZtitchProject() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (videoRef.current) {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            if (error.name !== 'AbortError') {
+              console.error("Video play failed:", error);
+            }
+          });
+        }
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
   return (
-    <div style={{ backgroundColor: '#050505', color: '#fff', height: '100vh', overflow: 'hidden', padding: '40px 48px', display: 'flex', flexDirection: 'column' }}>
+    <div className="project-page-wrapper">
       
       {/* Header Row */}
-      <div style={{ marginBottom: '32px' }}>
-        <Link href="/#projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-orange)', textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem' }}>
+      <div style={{ marginBottom: '24px' }}>
+        <Link href="/#projects" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--accent-orange)', textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem', marginBottom: '16px' }}>
           ← Back to Portfolio
         </Link>
+        <h1 style={{ fontSize: '3rem', fontWeight: 800, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+          ZTITCH <span style={{ color: 'var(--accent-orange)' }}>ECOMMERCE</span>
+        </h1>
       </div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '40px', flex: 1, minHeight: 0 }}>
+      <div className="project-page-grid">
         
         {/* Left Column (Content) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', overflowY: 'auto', paddingRight: '16px' }}>
+        <div className="project-left-col">
           <div>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '12px' }}>
-              ZTITCH ECOMMERCE
-            </h1>
-            
             <p style={{ fontSize: '0.95rem', color: '#aaa', margin: 0, lineHeight: 1.6 }}>
               A custom tailoring ecommerce solution with detailed measurement configurations and dynamic cart. The platform allows users to customize their tailoring needs, track orders, and interact with an intuitive UI built primarily using Next.js.
             </p>
@@ -38,28 +57,29 @@ export default function ZtitchProject() {
               <h3 style={{ fontSize: '1.2rem', margin: 0, marginBottom: '8px' }}>Admin Dashboard</h3>
               <p style={{ color: '#aaa', fontSize: '0.9rem', margin: '0 0 16px 0' }}>Access the backend dashboard to see how measurements and users are managed.</p>
               
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
-                <div style={{ backgroundColor: '#000', padding: '12px 16px', borderRadius: '8px', fontFamily: 'monospace', color: '#ddd', fontSize: '0.8rem', flex: 1 }}>
-                  <div style={{ marginBottom: '4px' }}><strong>Email:</strong> admin@demo.com</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ backgroundColor: '#000', padding: '12px 16px', borderRadius: '8px', fontFamily: 'monospace', color: '#ddd', fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <div><strong>Email:</strong> admin@demo.com</div>
                   <div><strong>Pass:</strong> admin123</div>
                 </div>
-                <a href="#" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#333', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>Access Panel →</a>
+                <a href="#" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#333', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.85rem', alignSelf: 'flex-start' }}>Admin Panel →</a>
               </div>
             </div>
           </div>
         </div>
-
         {/* Right Column (Video) */}
-        <div style={{ borderRadius: '12px', overflow: 'hidden', height: '100%', border: '1px solid rgba(255,255,255,0.05)', backgroundColor: '#0a0a0a' }}>
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-connection-data-lines-32115-large.mp4" type="video/mp4" />
-          </video>
+        <div className="project-right-col">
+          <div className="project-video-wrapper">
+            <video 
+              ref={videoRef}
+              loop 
+              muted 
+              playsInline 
+              className="project-video"
+            >
+              <source src="/images/projects/ztitch-vid.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
         
       </div>

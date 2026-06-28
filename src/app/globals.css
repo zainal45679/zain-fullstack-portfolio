@@ -1322,3 +1322,127 @@ p {
 .gallery-item:hover .gallery-img {
   transform: scale(1.05) !important;
 }
+
+/* Project Pages Responsive Layout */
+.project-page-wrapper {
+  background-color: #050505;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+  padding: 40px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-page-grid {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: 40px;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.project-left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  padding-right: 16px;
+}
+
+.project-right-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+}
+
+.project-video-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  background-color: #0a0a0a;
+  width: 100%;
+  height: auto;
+}
+
+.project-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.8;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .project-page-wrapper {
+    padding: 24px 20px;
+  }
+  
+  .project-page-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: flex-start;
+  }
+  
+  .project-left-col {
+    padding-right: 0;
+  }
+
+  /* Make headings scale down on mobile */
+  .project-page-wrapper h1 {
+    font-size: 2rem !important;
+  }
+  
+  /* Hide the video on mobile */
+  .project-right-col {
+    display: none !important;
+  }
+}
+
+/* Branding Page Responsive Layout */
+.branding-page-wrapper {
+  background-color: #050505;
+  color: #fff;
+  min-height: 100vh;
+  padding: 40px 48px;
+}
+
+.branding-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .branding-page-wrapper {
+    padding: 24px 20px;
+  }
+  
+  .branding-gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .branding-page-wrapper h1 {
+    font-size: 2.5rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .branding-gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Disable Custom Cursor on Mobile */
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none !important;
+  }
+  
+  *, button, a {
+    cursor: auto !important;
+  }
+}

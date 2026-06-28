@@ -1,8 +1,22 @@
 'use client';
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence, useAnimationFrame, useMotionValue } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { 
+  SiMongodb, 
+  SiExpress, 
+  SiReact, 
+  SiNodedotjs, 
+  SiNextdotjs,
+  SiFigma,
+  SiJavascript,
+  SiPython,
+  SiWordpress,
+  SiGithub,
+  SiTailwindcss
+} from "react-icons/si";
+import { MdDesignServices } from "react-icons/md";
 
 // Icons for marquee
 const tools = [
@@ -13,6 +27,46 @@ const tools = [
 
 // Duplicate for infinite marquee effect
 const marqueeItems = [...tools, ...tools, ...tools];
+
+const wrap = (min: number, max: number, v: number) => {
+  const rangeSize = max - min;
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
+};
+
+function InfiniteMarquee({ children, speed = 10, direction = -1 }: { children: React.ReactNode, speed?: number, direction?: number }) {
+  const baseX = useMotionValue(0);
+  const x = useTransform(baseX, (v) => `${v}%`);
+  
+  useAnimationFrame((t, delta) => {
+    let moveBy = direction * speed * (delta / 1000);
+    baseX.set(wrap(-50, 0, baseX.get() + moveBy));
+  });
+
+  return (
+    <div style={{ overflow: "hidden", display: "flex", width: "100%", padding: '20px 0' }}>
+      <motion.div
+        style={{ x, display: "flex", width: "max-content", cursor: "grab" }}
+        whileTap={{ cursor: "grabbing" }}
+        onPan={(e, info) => {
+          baseX.set(wrap(-50, 0, baseX.get() + (info.delta.x / window.innerWidth) * 50));
+        }}
+      >
+        <div style={{ display: 'flex' }}>
+          {children}
+          {children}
+          {children}
+          {children}
+        </div>
+        <div style={{ display: 'flex' }}>
+          {children}
+          {children}
+          {children}
+          {children}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 // Stagger animation variants
 const containerVariants = {
@@ -31,12 +85,74 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, type: "spring" } }
 };
 
+const rowVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.3
+    }
+  }
+};
+
+const cardVariantsLeft = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, type: "spring", bounce: 0.2 } }
+};
+
+const cardVariantsRight = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5, type: "spring", bounce: 0.2 } }
+};
+
+const dotVariants = {
+  hidden: { scale: 0, opacity: 0, x: "-50%", y: "-50%" },
+  visible: { scale: 1, opacity: 1, x: "-50%", y: "-50%", transition: { type: "spring", stiffness: 300, damping: 20 } }
+};
+
 const StoryExperience = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const firstDotRef = useRef<HTMLDivElement>(null);
+  const lastDotRef = useRef<HTMLDivElement>(null);
+  const [lineStyles, setLineStyles] = useState({ top: 0, height: 0, opacity: 0 });
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start center", "end center"]
+  });
+
+  useEffect(() => {
+    const updateLine = () => {
+      if (ref.current && firstDotRef.current && lastDotRef.current) {
+        const wrapperRect = ref.current.getBoundingClientRect();
+        const firstDotRect = firstDotRef.current.getBoundingClientRect();
+        const lastDotRect = lastDotRef.current.getBoundingClientRect();
+
+        const topOffset = (firstDotRect.top - wrapperRect.top) + (firstDotRect.height / 2);
+        const bottomOffset = (lastDotRect.top - wrapperRect.top) + (lastDotRect.height / 2);
+        const height = bottomOffset - topOffset;
+
+        setLineStyles({
+          top: topOffset,
+          height: height,
+          opacity: 1
+        });
+      }
+    };
+
+    updateLine();
+    window.addEventListener('resize', updateLine);
+    const timeout = setTimeout(updateLine, 100);
+    return () => {
+      window.removeEventListener('resize', updateLine);
+      clearTimeout(timeout);
+    };
+  }, []);
+  
   return (
     <div style={{ backgroundColor: '#ffffff', width: '100%', overflow: 'hidden' }}>
       
       {/* Section Header */}
-      <div className="container" style={{ maxWidth: '1400px', padding: '60px 24px 0 24px' }}>
+      <div className="container" style={{ maxWidth: '1400px', padding: '24px 24px 0 24px' }}>
         <div className="approach-top-bar" style={{ color: '#111', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px' }}>
           <div className="approach-label">
             <div className="approach-label-square"></div>
@@ -47,18 +163,30 @@ const StoryExperience = () => {
         </div>
       </div>
 
-      <div className="timeline-wrapper">
-        <div className="timeline-center-line"></div>
+      <div className="timeline-wrapper" ref={ref}>
+        {/* Animated Center Line */}
+        <motion.div 
+          className="timeline-center-line"
+          style={{ 
+            x: "-50%", 
+            originY: 0, 
+            scaleY: useTransform(scrollYProgress, [0.1, 0.9], [0, 1]),
+            top: lineStyles.top ? `${lineStyles.top}px` : '150px',
+            height: lineStyles.height ? `${lineStyles.height}px` : 'auto',
+            bottom: lineStyles.height ? 'auto' : '150px',
+            opacity: lineStyles.opacity
+          }}
+        ></motion.div>
         
         {/* Experience 1 - Left */}
         <motion.div 
           className="timeline-row left"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
+          variants={rowVariants}
         >
-          <div className="timeline-content">
+          <motion.div className="timeline-content" variants={cardVariantsLeft}>
             <div className="timeline-date">Jan 2026 – Jun 2026</div>
             <div className="timeline-title">MERN Stack Intern</div>
             <div className="timeline-company">Urbanhub Innovations</div>
@@ -69,20 +197,22 @@ const StoryExperience = () => {
               <span className="timeline-tool-badge">React</span>
               <span className="timeline-tool-badge">Node.js</span>
             </div>
-          </div>
-          <div className="timeline-dot-center"></div>
+          </motion.div>
+          <motion.div className="timeline-dot-center" ref={firstDotRef} variants={dotVariants}></motion.div>
           <div className="timeline-empty"></div>
         </motion.div>
 
         {/* Experience 2 - Right */}
         <motion.div 
           className="timeline-row right"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
+          variants={rowVariants}
         >
-          <div className="timeline-content">
+          <div className="timeline-empty"></div>
+          <motion.div className="timeline-dot-center" variants={dotVariants}></motion.div>
+          <motion.div className="timeline-content" variants={cardVariantsRight}>
             <div className="timeline-date">Jul 2025 – Dec 2025</div>
             <div className="timeline-title">Freelance Full Stack</div>
             <div className="timeline-company">Self-Employed</div>
@@ -92,20 +222,18 @@ const StoryExperience = () => {
               <span className="timeline-tool-badge">Tailwind CSS</span>
               <span className="timeline-tool-badge">Stripe</span>
             </div>
-          </div>
-          <div className="timeline-dot-center"></div>
-          <div className="timeline-empty"></div>
+          </motion.div>
         </motion.div>
 
         {/* Experience 3 - Left */}
         <motion.div 
           className="timeline-row left"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
+          variants={rowVariants}
         >
-          <div className="timeline-content">
+          <motion.div className="timeline-content" variants={cardVariantsLeft}>
             <div className="timeline-date">Jan 2025 – Jun 2025</div>
             <div className="timeline-title">Data Science Intern</div>
             <div className="timeline-company">Datamites</div>
@@ -115,8 +243,8 @@ const StoryExperience = () => {
               <span className="timeline-tool-badge">Pandas</span>
               <span className="timeline-tool-badge">Data Analysis</span>
             </div>
-          </div>
-          <div className="timeline-dot-center"></div>
+          </motion.div>
+          <motion.div className="timeline-dot-center" ref={lastDotRef} variants={dotVariants}></motion.div>
           <div className="timeline-empty"></div>
         </motion.div>
 
@@ -133,6 +261,7 @@ export default function Home() {
   // Custom cursor state
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
@@ -187,7 +316,8 @@ export default function Home() {
       <section 
         className="section bg-black" 
         style={{ 
-          display: 'block', 
+          display: 'flex', 
+          flexDirection: 'column',
           minHeight: '100vh', 
           backgroundImage: 'url(/profile.png)',
           backgroundSize: 'cover',
@@ -200,11 +330,15 @@ export default function Home() {
         
         {/* Navigation Layer */}
         <nav className="hero-nav">
-          <div className="hero-logo">
+          <div className="hero-logo" style={{ zIndex: 100 }}>
             Zain<span style={{ color: 'var(--accent-orange)' }}>*</span>
           </div>
           
-          <div className="mobile-menu-btn" style={{ display: 'none', fontSize: '2rem', fontWeight: 300 }}>
+          <div 
+            className="mobile-menu-btn" 
+            style={{ display: 'none', fontSize: '2rem', fontWeight: 300, zIndex: 100, transform: isMobileMenuOpen ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s' }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
             +
           </div>
 
@@ -213,9 +347,10 @@ export default function Home() {
             <Link href="#about" className="hero-link">About<sup>02</sup></Link>
             <Link href="#projects" className="hero-link">Work<sup>03</sup></Link>
             <Link href="#experience" className="hero-link">Exp<sup>04</sup></Link>
+            <Link href="#contact" className="hero-link">Contact<sup>05</sup></Link>
           </div>
           
-          <Link href="#contact" className="hero-btn-contact" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <Link href="#contact" className="hero-btn-contact hide-on-mobile" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <span className="btn-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14"></path>
@@ -224,16 +359,53 @@ export default function Home() {
             </span>
             Get in touch
           </Link>
+          
+          {/* Mobile Fullscreen Menu Overlay */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100vw',
+                  height: '100vh',
+                  backgroundColor: '#000000',
+                  zIndex: 50,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  paddingTop: '80px',
+                  paddingRight: '24px',
+                  gap: '16px'
+                }}
+              >
+                <Link href="#home" className="hero-link" style={{ fontSize: '1rem' }} onClick={() => setIsMobileMenuOpen(false)}>Home<sup>01</sup></Link>
+                <Link href="#about" className="hero-link" style={{ fontSize: '1rem' }} onClick={() => setIsMobileMenuOpen(false)}>About<sup>02</sup></Link>
+                <Link href="#projects" className="hero-link" style={{ fontSize: '1rem' }} onClick={() => setIsMobileMenuOpen(false)}>Work<sup>03</sup></Link>
+                <Link href="#experience" className="hero-link" style={{ fontSize: '1rem' }} onClick={() => setIsMobileMenuOpen(false)}>Exp<sup>04</sup></Link>
+                <Link href="#contact" className="hero-link" style={{ fontSize: '1rem' }} onClick={() => setIsMobileMenuOpen(false)}>Contact<sup>05</sup></Link>
+                <Link href="#contact" className="hero-btn-contact" onClick={() => setIsMobileMenuOpen(false)} style={{ marginTop: '10px', display: 'inline-flex', fontSize: '0.9rem', padding: '10px 16px' }}>
+                  Get in touch
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </nav>
 
         {/* Content Layer */}
-        <div style={{ position: 'relative', zIndex: 1, height: '100vh', width: '100%' }}>
+        <div className="hero-content-layer">
           
           {/* Bottom Left: Huge Text */}
           <div className="hero-bottom-left">
             <div className="hero-copyright">©2026</div>
             <div className="hero-huge-text">
-              Zain-al<span style={{ color: 'var(--accent-orange)' }}>*</span>
+              Zain<br />al Faisal<span style={{ color: 'var(--accent-orange)' }}>*</span>
             </div>
           </div>
           
@@ -257,9 +429,6 @@ export default function Home() {
             </motion.p>
           </div>
           
-          {/* Orange Dot Decoration */}
-          <div style={{ position: 'absolute', right: '350px', bottom: '280px', width: '12px', height: '12px', borderRadius: '50%', backgroundColor: 'var(--accent-orange)' }}></div>
-
           {/* Bottom Right: CV Button */}
           <div className="hero-bottom-right">
             <a 
@@ -284,23 +453,35 @@ export default function Home() {
       <section className="about-section" id="about">
         <div className="about-content-wrapper">
           
-          <div className="approach-top-bar" style={{ borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px', marginBottom: '40px' }}>
+          <motion.div 
+            className="approach-top-bar" 
+            style={{ borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px', marginBottom: '24px' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="approach-label">
               <div className="approach-label-square" style={{ backgroundColor: '#111' }}></div>
               Hey, Just An Intro
             </div>
             <div>(CQ® — 01)</div>
             <div>©2026</div>
-          </div>
+          </motion.div>
           
-          <div className="about-top-grid">
+          <motion.div 
+            className="about-top-grid"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+          >
             {/* Empty column to keep the text pushed to the right, matching previous layout */}
             <div className="hide-on-mobile"></div>
             
             <div>
               <div className="about-huge-text">
                 A Full Stack Developer in Kerala, crafting scalable backends and dynamic interfaces.®
-                <div style={{ position: 'absolute', right: '150px', bottom: '15px', width: '16px', height: '16px', backgroundColor: 'var(--accent-orange)', borderRadius: '50%' }}></div>
               </div>
               
               <Link href="#contact" className="about-btn" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
@@ -313,80 +494,167 @@ export default function Home() {
                 Get in touch
               </Link>
             </div>
-          </div>
+          </motion.div>
           
           <div className="about-columns-grid">
-            <div className="about-col">
+            <motion.div 
+              className="about-col"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+            >
               <h3>Robust Engineering</h3>
               <p>I specialize in transforming complex requirements into scalable MERN stack applications. With expertise in Next.js, Node.js, and MongoDB, my code is designed for performance and reliability.</p>
-            </div>
-            <div className="about-col">
+            </motion.div>
+            <motion.div 
+              className="about-col"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               <h3>Beautiful Design</h3>
               <p>I am not just a coder—I am also a designer. I leverage tools like Adobe Illustrator, InDesign, and Photoshop to create visually stunning interfaces, bridging the gap between design and engineering.</p>
-            </div>
+            </motion.div>
           </div>
           
-          <div className="about-images-grid" id="projects">
-            <div className="about-img-card" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <div className="projects-heading" id="projects">
+            <div className="projects-heading-square"></div>
+            Selected Projects
+          </div>
+          <div className="about-images-grid">
+            <motion.div 
+              className="about-img-card" 
+              onMouseEnter={() => setIsHovering(true)} 
+              onMouseLeave={() => setIsHovering(false)}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+            >
               <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30" alt="Project 1" />
-            </div>
-            <div className="about-img-card" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+              <Link href="/projects/opticals" className="project-overlay">
+                <div className="project-top-row">
+                  <div className="project-title">OPTICALS</div>
+                  <div className="project-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </div>
+                </div>
+                <div className="project-desc">A full-stack ecommerce platform for eyewear, featuring virtual try-ons and inventory management.</div>
+              </Link>
+            </motion.div>
+
+            <motion.div 
+              className="about-img-card" 
+              onMouseEnter={() => setIsHovering(true)} 
+              onMouseLeave={() => setIsHovering(false)}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+            >
               <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e" alt="Project 2" />
-            </div>
-            <div className="about-img-card" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+              <Link href="/projects/ztitch" className="project-overlay">
+                <div className="project-top-row">
+                  <div className="project-title">ZTITCH ECOMMERCE</div>
+                  <div className="project-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </div>
+                </div>
+                <div className="project-desc">A custom tailoring ecommerce solution with detailed measurement configurations and dynamic cart.</div>
+              </Link>
+            </motion.div>
+
+            <motion.div 
+              className="about-img-card" 
+              onMouseEnter={() => setIsHovering(true)} 
+              onMouseLeave={() => setIsHovering(false)}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Project 3" />
-            </div>
-          </div>
-          
-          <div className="about-divider">
-            +
+              <Link href="/projects/branding" className="project-overlay">
+                <div className="project-top-row">
+                  <div className="project-title">BRANDING</div>
+                  <div className="project-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                  </div>
+                </div>
+                <div className="project-desc">Complete A-Z brand identity design including logo conceptualization, letterheads, and brand guidelines.</div>
+              </Link>
+            </motion.div>
           </div>
           
           {/* Scrolling Marquees */}
-          <div style={{ width: '100%', overflow: 'hidden', borderTop: '1px solid rgba(0,0,0,0.1)', padding: '20px 0' }}>
-            <motion.div style={{ x: useTransform(scrollYProgress, [0, 1], [0, -800]), display: 'flex', width: '200%' }}>
+          <div style={{ width: '100%', borderTop: '1px solid rgba(0,0,0,0.1)' }}>
+            <InfiniteMarquee speed={0.5} direction={-1}>
               <div className="about-logo-strip">
-                <div className="about-logo-item">MongoDB.</div>
-                <div className="about-logo-item">Express.</div>
-                <div className="about-logo-item">REACT</div>
-                <div className="about-logo-item" style={{ display: 'flex', gap: '8px' }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Node
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiMongodb size={24} color="#47A248" /> MongoDB
                 </div>
-                <div className="about-logo-item" style={{ display: 'flex', gap: '8px' }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Next.js
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center', fontWeight: 'bold' }}>
+                  <SiExpress size={24} /> Express.js
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiReact size={24} color="#61DAFB" /> React
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiNodedotjs size={24} color="#339933" /> Node.js
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiNextdotjs size={24} /> Next.js
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiJavascript size={24} color="#F7DF1E" /> JavaScript
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiPython size={24} color="#3776AB" /> Python
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiWordpress size={24} color="#21759B" /> WordPress
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiGithub size={24} /> GitHub
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiTailwindcss size={24} color="#06B6D4" /> Tailwind CSS
                 </div>
               </div>
-              {/* Duplicate for infinite feel */}
-              <div className="about-logo-strip">
-                <div className="about-logo-item">MongoDB.</div>
-                <div className="about-logo-item">Express.</div>
-                <div className="about-logo-item">REACT</div>
-                <div className="about-logo-item">Node</div>
-                <div className="about-logo-item">Next.js</div>
-              </div>
-            </motion.div>
+            </InfiniteMarquee>
           </div>
           
-          <div style={{ width: '100%', overflow: 'hidden', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', padding: '20px 0', marginBottom: '20px' }}>
-            <motion.div style={{ x: useTransform(scrollYProgress, [0, 1], [-800, 0]), display: 'flex', width: '200%' }}>
+          <div style={{ width: '100%', borderTop: '1px solid rgba(0,0,0,0.1)', borderBottom: '1px solid rgba(0,0,0,0.1)', marginBottom: '20px' }}>
+            <InfiniteMarquee speed={0.5} direction={1}>
               <div className="about-logo-strip">
-                <div className="about-logo-item">Adobe Illustrator</div>
-                <div className="about-logo-item">Photoshop</div>
-                <div className="about-logo-item">InDesign</div>
-                <div className="about-logo-item">Figma</div>
-                <div className="about-logo-item">UI/UX Design</div>
-                <div className="about-logo-item">Kerala University</div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div style={{width:'24px',height:'24px',backgroundColor:'#330000',color:'#FF9A00',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:'bold',fontSize:'12px',borderRadius:'4px'}}>Ai</div> Illustrator
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div style={{width:'24px',height:'24px',backgroundColor:'#001E36',color:'#31A8FF',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:'bold',fontSize:'12px',borderRadius:'4px'}}>Ps</div> Photoshop
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div style={{width:'24px',height:'24px',backgroundColor:'#49021F',color:'#FF3366',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:'bold',fontSize:'12px',borderRadius:'4px'}}>Id</div> InDesign
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <SiFigma size={24} color="#F24E1E" /> Figma
+                </div>
+                <div className="about-logo-item" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <MdDesignServices size={24} /> UI/UX Design
+                </div>
               </div>
-              {/* Duplicate for infinite feel */}
-              <div className="about-logo-strip">
-                <div className="about-logo-item">Adobe Illustrator</div>
-                <div className="about-logo-item">Photoshop</div>
-                <div className="about-logo-item">InDesign</div>
-                <div className="about-logo-item">Figma</div>
-                <div className="about-logo-item">UI/UX Design</div>
-                <div className="about-logo-item">Kerala University</div>
-              </div>
-            </motion.div>
+            </InfiniteMarquee>
           </div>
           
         </div>
@@ -396,14 +664,20 @@ export default function Home() {
       <section className="approach-section" id="approach">
         <div className="container" style={{ maxWidth: '1400px' }}>
           
-          <div className="approach-top-bar">
+          <motion.div 
+            className="approach-top-bar"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="approach-label">
               <div className="approach-label-square"></div>
               Approach Style
             </div>
             <div>(CQ® — 02)</div>
             <div>©2026</div>
-          </div>
+          </motion.div>
           
           <div className="approach-cards-grid">
             {/* Card 1 */}
@@ -495,7 +769,13 @@ export default function Home() {
             </motion.div>
           </div>
           
-          <div className="approach-bottom-grid">
+          <motion.div 
+            className="approach-bottom-grid"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+          >
             <div>
               <Link href="#contact" className="about-btn" style={{ padding: '8px 24px 8px 8px' }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <span className="btn-icon">
@@ -523,7 +803,7 @@ export default function Home() {
                 <span>100%</span>
               </div>
             </div>
-          </div>
+          </motion.div>
           
         </div>
       </section>
@@ -535,7 +815,7 @@ export default function Home() {
       <section className="contact-section" id="contact">
         <div className="container" style={{ maxWidth: '1400px' }}>
           
-          <div className="approach-top-bar" style={{ color: '#aaa', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '24px' }}>
+          <div className="approach-top-bar" style={{ color: '#aaa', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '24px', marginBottom: '24px' }}>
             <div className="approach-label" style={{ color: '#fff' }}>
               <div className="approach-label-square" style={{ backgroundColor: 'var(--accent-orange)' }}></div>
               Let's Work Together
@@ -598,7 +878,6 @@ export default function Home() {
             >
               <div className="contact-form-container">
                 <div className="contact-form-accent"></div>
-                <div style={{ position: 'absolute', top: '10px', right: '40px', width: '12px', height: '12px', backgroundColor: 'var(--accent-orange)', borderRadius: '50%' }}></div>
                 
                 <form onSubmit={handleSubmit} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   <input 

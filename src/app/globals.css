@@ -23,6 +23,7 @@
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
+  scroll-behavior: smooth;
   font-family: var(--font-main);
   background-color: var(--background);
   color: var(--foreground);
@@ -57,7 +58,8 @@ html, body {
 .page-wrapper {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 a {
@@ -293,7 +295,7 @@ p {
 .about-section {
   position: relative;
   background-color: #fafafa;
-  padding: 60px 48px;
+  padding: 24px 48px;
   color: #111;
   overflow: hidden;
 }
@@ -322,7 +324,7 @@ p {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 40px;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
 .about-label {
@@ -347,7 +349,7 @@ p {
   line-height: 1.1;
   letter-spacing: -0.03em;
   color: #111;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   position: relative;
 }
 
@@ -371,16 +373,16 @@ p {
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   margin-left: 340px;
-  margin-top: 60px;
+  margin-top: 0px;
   border-top: 1px solid rgba(0,0,0,0.05);
   border-bottom: 1px solid rgba(0,0,0,0.05);
-  padding: 40px 0;
+  padding: 24px 0;
 }
 
 .about-col h3 {
   font-size: 1.2rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .about-col p {
@@ -393,7 +395,8 @@ p {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-top: 100px;
+  margin-top: 40px;
+  margin-bottom: 60px;
 }
 
 .about-img-card {
@@ -401,41 +404,114 @@ p {
   background-color: #eee;
   border-radius: 12px;
   overflow: hidden;
+  position: relative;
+  cursor: pointer;
 }
 .about-img-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.about-img-card:hover img {
+  transform: scale(1.05);
 }
 
-.about-divider {
-  text-align: center;
-  margin: 60px 0;
-  color: #999;
-  font-size: 1.2rem;
-  position: relative;
-}
-.about-divider::after {
-  content: '';
+.project-overlay {
   position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
+  opacity: 1;
+  transition: background 0.3s ease;
+  color: white;
+  text-decoration: none;
+}
+.about-img-card:hover .project-overlay {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.project-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0px;
+  transition: margin-bottom 0.3s ease;
+}
+.about-img-card:hover .project-top-row {
+  margin-bottom: 12px;
+}
+
+.project-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.project-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-45deg);
+  opacity: 0;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+.about-img-card:hover .project-arrow {
+  opacity: 1;
+}
+.project-overlay:hover .project-arrow {
+  background-color: var(--accent-orange);
+}
+
+.project-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ddd;
+  transform: translateY(10px);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease, max-height 0.3s ease;
+}
+.about-img-card:hover .project-desc {
+  transform: translateY(0);
+  opacity: 1;
+  max-height: 100px;
+}
+
+.projects-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #111;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.projects-heading-square {
   width: 12px;
   height: 12px;
-  background-color: var(--accent-orange);
-  border-radius: 50%;
+  background-color: #111;
 }
+
 
 .about-logo-strip {
   display: flex;
   align-items: center;
-  gap: 80px;
-  padding: 0 40px;
+  gap: 30px;
+  padding: 0 15px;
 }
 
 .about-logo-item {
-  padding: 10px 20px;
+  padding: 10px 10px;
   font-weight: 900;
   font-size: 1.5rem;
   color: #111;
@@ -449,7 +525,7 @@ p {
 .approach-section {
   position: relative;
   background-color: var(--background);
-  padding: 120px 48px;
+  padding: 24px 48px;
   color: var(--foreground);
 }
 
@@ -459,7 +535,7 @@ p {
   align-items: center;
   font-weight: 600;
   font-size: 0.95rem;
-  margin-bottom: 80px;
+  margin-bottom: 24px;
   color: inherit;
 }
 
@@ -480,7 +556,7 @@ p {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  margin-bottom: 120px;
+  margin-bottom: 40px;
 }
 
 .approach-card {
@@ -497,7 +573,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
 .approach-card-number {
@@ -605,15 +681,15 @@ p {
 .timeline-center-line {
   position: absolute;
   left: 50%;
-  top: 60px;
-  bottom: 60px;
+  top: 130px;
+  bottom: 130px;
   width: 2px;
   background-color: rgba(0,0,0,0.1);
-  transform: translateX(-50%);
   z-index: 0;
 }
 
 .timeline-row {
+  position: relative; /* CRITICAL for dot positioning */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -649,9 +725,6 @@ p {
   padding-right: 40px;
 }
 
-.timeline-row.right {
-  flex-direction: row-reverse;
-}
 .timeline-row.right .timeline-content {
   text-align: left;
   padding-left: 40px;
@@ -731,7 +804,7 @@ p {
   position: relative;
   background-color: #050505; /* Black bg as requested */
   color: #fff;
-  padding: 100px 48px;
+  padding: 24px 48px;
 }
 
 .contact-grid {
@@ -898,11 +971,28 @@ p {
     justify-content: center;
     color: white;
     cursor: pointer;
+  }
+  
   .hide-on-mobile {
     display: none !important;
   }
 
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
   /* 1. Hero Section */
+  .hero-content-layer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 16px;
+    padding-bottom: 32px;
+    flex: 1; /* Automatically fill remaining height without exceeding 100vh */
+  }
+
   .hero-nav {
     padding: 16px;
   }
@@ -911,19 +1001,21 @@ p {
   }
   
   /* Stack bottom elements explicitly */
-  .hero-bottom-left {
-    bottom: 150px;
-    left: 16px;
+  .hero-bottom-left, .hero-right-content, .hero-bottom-right {
+    position: static;
+    max-width: 100%;
+    margin-bottom: 24px;
+    left: auto;
+    right: auto;
+    bottom: auto;
   }
+  
   .hero-huge-text {
     font-size: 3.5rem; /* Significantly smaller */
   }
   
   .hero-right-content {
-    bottom: 40px; /* Position directly below the huge text */
-    left: 16px;
-    right: auto;
-    max-width: 65%; /* Leave room for button on right */
+    margin-bottom: 32px;
   }
   .hero-right-content svg {
     display: none; /* Hide the large decorative SVG on mobile */
@@ -931,15 +1023,13 @@ p {
   .hero-right-content p {
     font-size: 0.95rem !important; /* Smaller paragraph */
     line-height: 1.4 !important;
+    max-width: 100%;
   }
   
-  .hero-bottom-right {
-    bottom: 40px;
-    right: 16px;
-  }
   .hero-bottom-right a {
-    padding: 8px 12px;
-    font-size: 0.75rem !important;
+    display: inline-flex;
+    padding: 12px 20px;
+    font-size: 0.85rem !important;
   }
 
   /* 2. About Section */
@@ -958,6 +1048,7 @@ p {
   .about-columns-grid {
     grid-template-columns: 1fr;
     gap: 24px;
+    margin-left: 0; /* Fix overflow pushing it off screen */
   }
   .about-col h3 {
     font-size: 1.3rem;
@@ -969,9 +1060,15 @@ p {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+  .about-img-card {
+    height: 180px; /* Much smaller cards on mobile */
+  }
+  .about-logo-strip {
+    gap: 20px; /* Much smaller gap on mobile */
+  }
   .about-logo-item {
     font-size: 1rem; /* Scale down marquee text */
-    padding: 10px;
+    padding: 8px 8px;
   }
   
   /* 3. Approach Section */
@@ -1006,19 +1103,24 @@ p {
     padding: 20px 16px;
   }
   .timeline-center-line {
-    left: 16px; /* Move line to far left */
+    left: 24px;
+    top: 60px;
+    bottom: 60px;
   }
   .timeline-row {
     flex-direction: column !important; /* Stack vertically */
     margin-top: 30px !important; /* Remove negative interlocking margin on mobile */
     gap: 16px;
+    align-items: flex-start !important;
   }
   .timeline-dot-center {
-    left: 16px; /* Align dot to left line */
+    left: 24px; /* EXACT same left as line */
+    top: 32px; 
+    transform: translate(-50%, -50%); /* Keep vertical and horizontal center */
   }
   .timeline-content, .timeline-empty, .timeline-image-container {
     width: 100%;
-    padding-left: 36px; /* Push content to the right of the line */
+    padding-left: 54px; /* Push content much further right of the line */
   }
   .timeline-empty {
     display: none; /* Hide empty spacers */
@@ -1215,4 +1317,8 @@ p {
 
 .timeline-desc li {
   margin-bottom: 12px;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.05) !important;
 }

@@ -940,8 +940,8 @@ p {
 
 .contact-submit {
   width: 100%;
-  background-color: white;
-  color: black;
+  background-color: var(--accent-orange);
+  color: white;
   border: none;
   border-radius: 12px;
   padding: 20px;
@@ -999,7 +999,7 @@ p {
     justify-content: flex-end;
     align-items: flex-start;
     padding: 16px;
-    padding-bottom: 32px;
+    padding-bottom: 8px; /* Reduced to shift content lower */
     flex: 1; /* Automatically fill remaining height without exceeding 100vh */
   }
 
@@ -1014,10 +1014,20 @@ p {
   .hero-bottom-left, .hero-right-content, .hero-bottom-right {
     position: static;
     max-width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 16px; /* Reduced to pack tighter and sit lower */
     left: auto;
     right: auto;
     bottom: auto;
+  }
+  
+  .hero-right-content {
+    order: 1;
+  }
+  .hero-bottom-left {
+    order: 2;
+  }
+  .hero-bottom-right {
+    order: 3;
   }
   
   .hero-huge-text {
@@ -1025,7 +1035,7 @@ p {
   }
   
   .hero-right-content {
-    margin-bottom: 32px;
+    margin-bottom: 16px; /* Reduced from 32px */
   }
   .hero-right-content svg {
     display: none; /* Hide the large decorative SVG on mobile */

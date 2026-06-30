@@ -1019,16 +1019,7 @@ p {
     right: auto;
     bottom: auto;
   }
-  
-  .hero-right-content {
-    order: 1;
-  }
-  .hero-bottom-left {
-    order: 2;
-  }
-  .hero-bottom-right {
-    order: 3;
-  }
+
   
   .hero-huge-text {
     font-size: 3.5rem; /* Significantly smaller */

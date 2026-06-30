@@ -15,7 +15,8 @@ import {
   SiWordpress,
   SiGithub,
   SiTailwindcss,
-  SiWhatsapp
+  SiWhatsapp,
+  SiGmail
 } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import { MdDesignServices, MdPhone } from "react-icons/md";
@@ -154,10 +155,10 @@ const StoryExperience = () => {
     <div style={{ backgroundColor: '#ffffff', width: '100%', overflow: 'hidden' }}>
       
       {/* Section Header */}
-      <div className="container" style={{ maxWidth: '1400px', padding: '24px 24px 0 24px' }}>
-        <div className="approach-top-bar" style={{ color: '#111', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px' }}>
+      <div className="container" style={{ maxWidth: '1400px', padding: '24px 48px 0 48px' }}>
+        <div className="approach-top-bar" style={{ color: '#111', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px', marginBottom: '24px' }}>
           <div className="approach-label">
-            <div className="approach-label-square"></div>
+            <div className="approach-label-square" style={{ backgroundColor: '#111' }}></div>
             Experience & Journey
           </div>
           <div>(CQ® — 03)</div>
@@ -254,6 +255,47 @@ const StoryExperience = () => {
     </div>
   );
 };
+const Typewriter = ({ text }: { text: string }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < text.length) {
+        setDisplayedText(text.substring(0, i + 1));
+        i++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 50);
+    return () => clearInterval(timer);
+  }, [text]);
+
+  return (
+    <div style={{ position: 'relative' }}>
+      {/* Invisible spacer to prevent layout shift */}
+      <p 
+        style={{ color: 'transparent', fontWeight: 500, fontSize: '1.25rem', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0, fontFamily: "'Courier New', Courier, monospace", userSelect: 'none' }} 
+        aria-hidden="true"
+      >
+        {text}_
+      </p>
+      
+      {/* Actual animated typing text */}
+      <p style={{ position: 'absolute', top: 0, left: 0, color: 'white', fontWeight: 500, fontSize: '1.25rem', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0, fontFamily: "'Courier New', Courier, monospace" }}>
+        {displayedText}
+        <motion.span 
+          animate={{ opacity: [1, 1, 0, 0] }}
+          transition={{ repeat: Infinity, duration: 1, times: [0, 0.5, 0.5, 1] }}
+          style={{ marginLeft: '4px', fontWeight: 800 }}
+        >
+          _
+        </motion.span>
+      </p>
+    </div>
+  );
+};
+
 
 export default function Home() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -282,10 +324,18 @@ export default function Home() {
     setStatus('loading');
     
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://formsubmit.co/ajax/zainal45679@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: "New Message from Portfolio Website!"
+        })
       });
       
       const data = await res.json();
@@ -293,13 +343,16 @@ export default function Home() {
       if (res.ok) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => setStatus('idle'), 3000);
       } else {
         setStatus('error');
         setErrorMessage(data.error || 'Something went wrong');
+        setTimeout(() => setStatus('idle'), 3000);
       }
     } catch (err) {
       setStatus('error');
       setErrorMessage('Failed to send message');
+      setTimeout(() => setStatus('idle'), 3000);
     }
   };
 
@@ -316,12 +369,11 @@ export default function Home() {
       
       {/* 1. HERO SECTION (Full Screen Image) */}
       <section 
-        className="section bg-black" 
+        className="hero-section section bg-black" 
         style={{ 
           display: 'flex', 
           flexDirection: 'column',
           minHeight: '100vh', 
-          backgroundImage: 'url(/profile.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           position: 'relative',
@@ -418,23 +470,13 @@ export default function Home() {
               <line x1="2" y1="12" x2="22" y2="12"></line>
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
-            <motion.p 
-              style={{ color: 'white', fontWeight: 500, fontSize: '1.25rem', lineHeight: 1.5, letterSpacing: '0.01em', margin: 0 }}
-              variants={{ hidden: { opacity: 1 }, visible: { transition: { staggerChildren: 0.02 } } }}
-              initial="hidden" animate="visible"
-            >
-              {"Hi, I am Zain® I'm a Full Stack Developer and highly talented Designer with experience in the MERN Stack, UI/UX, and Adobe Creative Cloud.".split("").map((char, i) => (
-                <motion.span key={i} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-                  {char}
-                </motion.span>
-              ))}
-            </motion.p>
+            <Typewriter text="Hi, I am Zain® I'm a Full Stack Developer and highly talented Designer with experience in the MERN Stack, UI/UX, and Adobe Creative Cloud." />
           </div>
           
           {/* Bottom Right: CV Button */}
           <div className="hero-bottom-right">
             <a 
-              href="/Zain_CV.pdf" 
+              href="/images/projects/Zain_CV.pdf" 
               download 
               className="hero-btn-contact"
               onMouseEnter={() => setIsHovering(true)}
@@ -486,15 +528,28 @@ export default function Home() {
                 A Full Stack Developer in Kerala, crafting scalable backends and dynamic interfaces.®
               </div>
               
-              <Link href="#contact" className="about-btn" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <span className="btn-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14"></path>
-                    <path d="m12 5 7 7-7 7"></path>
-                  </svg>
-                </span>
-                Get in touch
-              </Link>
+              <div className="about-buttons-container">
+                <Link href="#contact" className="about-btn" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                  <span className="btn-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14"></path>
+                      <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                  </span>
+                  Get in touch
+                </Link>
+                
+                <a href="/images/projects/Zain_CV.pdf" download className="about-btn show-on-mobile" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                  <span className="btn-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                      <polyline points="7 10 12 15 17 10"></polyline>
+                      <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                  </span>
+                  Download CV
+                </a>
+              </div>
             </div>
           </motion.div>
           
@@ -521,10 +576,24 @@ export default function Home() {
             </motion.div>
           </div>
           
-          <div className="projects-heading" id="projects">
-            <div className="projects-heading-square"></div>
+          <div className="projects-heading hide-on-mobile" id="projects">
             Selected Projects
           </div>
+          
+          <motion.div 
+            className="approach-top-bar show-on-mobile" 
+            style={{ color: '#111', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px', marginBottom: '40px' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="approach-label">
+              Selected Projects
+            </div>
+            <div>(CQ® — 02)</div>
+            <div>©2026</div>
+          </motion.div>
           <div className="about-images-grid">
             <motion.div 
               className="about-img-card" 
@@ -535,7 +604,8 @@ export default function Home() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6 }}
             >
-              <img src="/images/projects/optical.jpg" alt="Project 1" />
+              <img src="/images/projects/optical-1.jpg" alt="Project 1" />
+              <img src="/images/projects/hover-1.jpg" alt="Project 1 Hover" className="hover-img" />
               <Link href="/projects/opticals" className="project-overlay">
                 <div className="project-top-row">
                   <div className="project-title">CHASMA OPTICALS</div>
@@ -559,7 +629,8 @@ export default function Home() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.15 }}
             >
-              <img src="/images/projects/ztitch.jpeg" alt="Project 2" />
+              <img src="/images/projects/ztitch.jpg" alt="Project 2" />
+              <img src="/images/projects/hover-2.jpg" alt="Project 2 Hover" className="hover-img" />
               <Link href="/projects/ztitch" className="project-overlay">
                 <div className="project-top-row">
                   <div className="project-title">ZTITCH ECOMMERCE</div>
@@ -583,7 +654,8 @@ export default function Home() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff" alt="Project 3" />
+              <img src="/images/projects/thumbnail-1.jpg" alt="Project 3" />
+              <img src="/images/projects/gallery1.jpg" alt="Project 3 Hover" className="hover-img" />
               <Link href="/projects/branding" className="project-overlay">
                 <div className="project-top-row">
                   <div className="project-title">BRANDING</div>
@@ -668,13 +740,14 @@ export default function Home() {
           
           <motion.div 
             className="approach-top-bar"
+            style={{ color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '24px', marginBottom: '40px' }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
             <div className="approach-label">
-              <div className="approach-label-square"></div>
+              <div className="approach-label-square" style={{ backgroundColor: 'var(--accent-orange)' }}></div>
               Approach Style
             </div>
             <div>(CQ® — 02)</div>
@@ -778,20 +851,12 @@ export default function Home() {
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
           >
-            <div>
-              <Link href="#contact" className="about-btn" style={{ padding: '8px 24px 8px 8px' }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <span className="btn-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14"></path>
-                    <path d="m12 5 7 7-7 7"></path>
-                  </svg>
-                </span>
-                Contact now
-              </Link>
-            </div>
+            {/* Removed Contact now button as requested */}
+            <div className="hide-on-mobile"></div>
             
             <div className="approach-list">
               <div className="approach-list-item">
+                <div className="approach-list-marker"></div>
                 <span>Strategy</span>
                 <span>25%</span>
               </div>
@@ -801,6 +866,7 @@ export default function Home() {
                 <span>60%</span>
               </div>
               <div className="approach-list-item">
+                <div className="approach-list-marker"></div>
                 <span>Launch</span>
                 <span>100%</span>
               </div>
@@ -872,16 +938,19 @@ export default function Home() {
                 </a>
                 
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                  <a href="mailto:zainal45679@gmail.com" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                    <SiGmail size={20} />
+                  </a>
+                  <a href="https://wa.me/919744145679" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
                     <SiWhatsapp size={20} />
                   </a>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                  <a href="tel:+919744145679" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
                     <MdPhone size={20} />
                   </a>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                  <a href="https://www.linkedin.com/in/zain-al-faisal-62a6a6326" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
                     <FaLinkedin size={20} />
                   </a>
-                  <a href="#" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
+                  <a href="https://github.com/zainal45679" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', textDecoration: 'none', transition: 'all 0.3s' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--accent-orange)'; e.currentTarget.style.borderColor = 'var(--accent-orange)'; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}>
                     <SiGithub size={20} />
                   </a>
                 </div>
@@ -935,17 +1004,29 @@ export default function Home() {
                   <AnimatePresence>
                     {status === 'success' && (
                       <motion.div 
-                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        style={{ marginTop: '24px', padding: '16px', backgroundColor: 'rgba(57, 255, 20, 0.1)', border: '1px solid var(--accent-neon)', color: 'var(--accent-neon)', borderRadius: '12px', textAlign: 'center', fontWeight: 'bold' }}>
-                        Message sent successfully!
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }} 
+                        animate={{ opacity: 1, height: 'auto', marginTop: '16px' }} 
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div style={{ padding: '16px 20px', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#4CAF50' }}></div>
+                          <span style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 400 }}>Thank you! Your message has been sent successfully.</span>
+                        </div>
                       </motion.div>
                     )}
                     
                     {status === 'error' && (
                       <motion.div 
-                        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                        style={{ marginTop: '24px', padding: '16px', backgroundColor: 'rgba(255, 90, 54, 0.1)', border: '1px solid var(--accent-orange)', color: 'var(--accent-orange)', borderRadius: '12px', textAlign: 'center', fontWeight: 'bold' }}>
-                        {errorMessage}
+                        initial={{ opacity: 0, height: 0, marginTop: 0 }} 
+                        animate={{ opacity: 1, height: 'auto', marginTop: '16px' }} 
+                        exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        <div style={{ padding: '16px 20px', backgroundColor: 'rgba(255, 90, 54, 0.05)', border: '1px solid rgba(255, 90, 54, 0.2)', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--accent-orange)' }}></div>
+                          <span style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 400 }}>{errorMessage || 'Failed to send message. Please try again.'}</span>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>

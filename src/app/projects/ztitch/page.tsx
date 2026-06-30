@@ -18,7 +18,7 @@ export default function ZtitchProject() {
           });
         }
       }
-    }, 2000);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
   return (

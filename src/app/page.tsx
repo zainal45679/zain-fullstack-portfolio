@@ -16,7 +16,11 @@ import {
   SiGithub,
   SiTailwindcss,
   SiWhatsapp,
-  SiGmail
+  SiGmail,
+  SiTypescript,
+  SiHtml5,
+  SiCss,
+  SiBootstrap
 } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import { MdDesignServices, MdPhone } from "react-icons/md";
@@ -878,6 +882,85 @@ export default function Home() {
 
       {/* 5. TOOLS & KNOWLEDGE SECTION (TIMELINE) */}
       <StoryExperience />
+
+      {/* SKILLS SECTION */}
+      <section className="skills-section" id="skills">
+        <div className="container" style={{ maxWidth: '1400px', paddingLeft: '48px', paddingRight: '48px' }}>
+          <div className="approach-top-bar" style={{ color: '#aaa', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '24px', marginBottom: '40px' }}>
+            <div className="approach-label" style={{ color: '#fff' }}>
+              <div className="approach-label-square" style={{ backgroundColor: 'var(--accent-orange)' }}></div>
+              Technical Arsenal
+            </div>
+            <div>(CQ® — 04)</div>
+            <div>©2026</div>
+          </div>
+
+          <div className="skills-desktop-grid">
+            
+            {/* Section 1 */}
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+              <h3 className="skills-heading">
+                Frontend
+              </h3>
+              <div className="skills-list">
+                <div className="skill-item"><SiHtml5 className="skill-icon" color="#E34F26" /> HTML</div>
+                <div className="skill-item"><SiCss className="skill-icon" color="#1572B6" /> CSS</div>
+                <div className="skill-item"><SiJavascript className="skill-icon" color="#F7DF1E" /> JavaScript</div>
+                <div className="skill-item"><SiTypescript className="skill-icon" color="#3178C6" /> TypeScript</div>
+                <div className="skill-item"><SiNextdotjs className="skill-icon" color="#fff" /> Next.js</div>
+                <div className="skill-item"><SiReact className="skill-icon" color="#61DAFB" /> React.js</div>
+                <div className="skill-item"><SiTailwindcss className="skill-icon" color="#06B6D4" /> Tailwind CSS</div>
+                <div className="skill-item"><SiBootstrap className="skill-icon" color="#7952B3" /> Bootstrap</div>
+              </div>
+            </motion.div>
+
+            {/* Section 2 */}
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+              <h3 className="skills-heading">
+                Backend & DB
+              </h3>
+              <div className="skills-list">
+                <div className="skill-item"><SiPython className="skill-icon" color="#3776AB" /> Python</div>
+                <div className="skill-item"><SiNodedotjs className="skill-icon" color="#339933" /> Node.js</div>
+                <div className="skill-item"><SiExpress className="skill-icon" color="#fff" /> Express.js</div>
+                <div className="skill-item"><SiMongodb className="skill-icon" color="#47A248" /> MongoDB</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#336791'}}>Pg</div> PostgreSQL</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#003B57'}}>SQL</div> SQL</div>
+              </div>
+            </motion.div>
+
+            {/* Section 3 */}
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+              <h3 className="skills-heading">
+                Design & CMS
+              </h3>
+              <div className="skills-list">
+                <div className="skill-item"><SiFigma className="skill-icon" color="#F24E1E" /> Figma</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#330000',color:'#FF9A00'}}>Ai</div> Illustrator</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#001E36',color:'#31A8FF'}}>Ps</div> Photoshop</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#49021F',color:'#FF3366'}}>Id</div> InDesign</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#00005d',color:'#9999ff'}}>Pr</div> Premiere Pro</div>
+                <div className="skill-item"><SiWordpress className="skill-icon" color="#21759B" /> WordPress</div>
+              </div>
+            </motion.div>
+
+            {/* Section 4 */}
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
+              <h3 className="skills-heading">
+                Tools
+              </h3>
+              <div className="skills-list">
+                <div className="skill-item"><SiGithub className="skill-icon" color="#fff" /> Git & GitHub</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#007ACC'}}>{`</>`}</div> VS Code</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#FF6C37', borderRadius:'50%'}}>P</div> Postman</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#635BFF'}}>S</div> Stripe API</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#150458'}}>Pd</div> Pandas</div>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
 
       {/* 6. CONTACT & CV SECTION */}
       <section className="contact-section" id="contact">

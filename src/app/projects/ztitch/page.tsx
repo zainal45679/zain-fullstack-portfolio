@@ -49,7 +49,7 @@ export default function ZtitchProject() {
             <div style={{ padding: '24px', backgroundColor: '#111', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
               <h3 style={{ fontSize: '1.2rem', margin: 0, marginBottom: '8px' }}>Live Project</h3>
               <p style={{ color: '#aaa', fontSize: '0.9rem', margin: '0 0 16px 0' }}>Click here for a live preview to check out the custom tailoring flow.</p>
-              <a href="#" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: 'var(--accent-orange)', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.85rem' }}>Visit Live Site →</a>
+              <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: 'var(--accent-orange)', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.85rem', opacity: 0.6, cursor: 'not-allowed' }}>Coming Soon</a>
             </div>
 
             {/* Bold Admin Dashboard Card (Smaller Fonts) */}
@@ -62,7 +62,7 @@ export default function ZtitchProject() {
                   <div><strong>Email:</strong> admin@demo.com</div>
                   <div><strong>Pass:</strong> admin123</div>
                 </div>
-                <a href="#" style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#333', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.85rem', alignSelf: 'flex-start' }}>Admin Panel →</a>
+                <a href="#" onClick={(e) => e.preventDefault()} style={{ display: 'inline-block', padding: '10px 20px', backgroundColor: '#333', color: '#fff', textDecoration: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.85rem', alignSelf: 'flex-start', opacity: 0.6, cursor: 'not-allowed' }}>Coming Soon</a>
               </div>
             </div>
           </div>

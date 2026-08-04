@@ -147,19 +147,27 @@ const StoryExperience = () => {
     };
 
     updateLine();
+    
+    const resizeObserver = new ResizeObserver(() => {
+      updateLine();
+    });
+    
+    if (ref.current) {
+      resizeObserver.observe(ref.current);
+    }
     window.addEventListener('resize', updateLine);
-    const timeout = setTimeout(updateLine, 100);
+
     return () => {
+      resizeObserver.disconnect();
       window.removeEventListener('resize', updateLine);
-      clearTimeout(timeout);
     };
   }, []);
   
   return (
-    <div style={{ backgroundColor: '#ffffff', width: '100%', overflow: 'hidden' }}>
+    <div id="experience" style={{ backgroundColor: '#ffffff', width: '100%', overflow: 'hidden' }}>
       
       {/* Section Header */}
-      <div className="container" style={{ maxWidth: '1400px', padding: '24px 48px 0 48px' }}>
+      <div className="container experience-header" style={{ maxWidth: '1400px', padding: '24px 38px 0 38px' }}>
         <div className="approach-top-bar" style={{ color: '#111', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px', marginBottom: '24px' }}>
           <div className="approach-label">
             <div className="approach-label-square" style={{ backgroundColor: '#111' }}></div>
@@ -185,7 +193,7 @@ const StoryExperience = () => {
           }}
         ></motion.div>
         
-        {/* Experience 1 - Left */}
+        {/* Experience 0 - Left */}
         <motion.div 
           className="timeline-row left"
           initial="hidden"
@@ -194,6 +202,35 @@ const StoryExperience = () => {
           variants={rowVariants}
         >
           <motion.div className="timeline-content" variants={cardVariantsLeft}>
+            <div className="timeline-date">Jun 2026 – Present</div>
+            <div className="timeline-title">Full Stack Developer</div>
+            <div className="timeline-company">Urbanhub Innovations</div>
+            <div className="timeline-desc">Building robust full-stack apps with Laravel, React, and Inertia.js. Designing responsive UIs using Tailwind & Shadcn, backed by SQL databases.</div>
+            <div className="timeline-tools">
+              <span className="timeline-tool-badge">React (TS)</span>
+              <span className="timeline-tool-badge">Laravel 11</span>
+              <span className="timeline-tool-badge">Inertia.js</span>
+              <span className="timeline-tool-badge">Tailwind CSS</span>
+              <span className="timeline-tool-badge">Shadcn UI</span>
+              <span className="timeline-tool-badge">Vite</span>
+              <span className="timeline-tool-badge">MySQL / PostgreSQL</span>
+            </div>
+          </motion.div>
+          <motion.div className="timeline-dot-center" ref={firstDotRef} variants={dotVariants}></motion.div>
+          <div className="timeline-empty"></div>
+        </motion.div>
+
+        {/* Experience 1 - Right */}
+        <motion.div 
+          className="timeline-row right"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          variants={rowVariants}
+        >
+          <div className="timeline-empty"></div>
+          <motion.div className="timeline-dot-center" variants={dotVariants}></motion.div>
+          <motion.div className="timeline-content" variants={cardVariantsRight}>
             <div className="timeline-date">Jan 2026 – Jun 2026</div>
             <div className="timeline-title">MERN Stack Intern</div>
             <div className="timeline-company">Urbanhub Innovations</div>
@@ -205,21 +242,17 @@ const StoryExperience = () => {
               <span className="timeline-tool-badge">Node.js</span>
             </div>
           </motion.div>
-          <motion.div className="timeline-dot-center" ref={firstDotRef} variants={dotVariants}></motion.div>
-          <div className="timeline-empty"></div>
         </motion.div>
 
-        {/* Experience 2 - Right */}
+        {/* Experience 2 - Left */}
         <motion.div 
-          className="timeline-row right"
+          className="timeline-row left"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           variants={rowVariants}
         >
-          <div className="timeline-empty"></div>
-          <motion.div className="timeline-dot-center" variants={dotVariants}></motion.div>
-          <motion.div className="timeline-content" variants={cardVariantsRight}>
+          <motion.div className="timeline-content" variants={cardVariantsLeft}>
             <div className="timeline-date">Jul 2025 – Dec 2025</div>
             <div className="timeline-title">Freelance Full Stack</div>
             <div className="timeline-company">Self-Employed</div>
@@ -230,17 +263,21 @@ const StoryExperience = () => {
               <span className="timeline-tool-badge">Stripe</span>
             </div>
           </motion.div>
+          <motion.div className="timeline-dot-center" variants={dotVariants}></motion.div>
+          <div className="timeline-empty"></div>
         </motion.div>
 
-        {/* Experience 3 - Left */}
+        {/* Experience 3 - Right */}
         <motion.div 
-          className="timeline-row left"
+          className="timeline-row right"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           variants={rowVariants}
         >
-          <motion.div className="timeline-content" variants={cardVariantsLeft}>
+          <div className="timeline-empty"></div>
+          <motion.div className="timeline-dot-center" ref={lastDotRef} variants={dotVariants}></motion.div>
+          <motion.div className="timeline-content" variants={cardVariantsRight}>
             <div className="timeline-date">Jan 2025 – Jun 2025</div>
             <div className="timeline-title">Data Science Intern</div>
             <div className="timeline-company">Datamites</div>
@@ -251,8 +288,6 @@ const StoryExperience = () => {
               <span className="timeline-tool-badge">Data Analysis</span>
             </div>
           </motion.div>
-          <motion.div className="timeline-dot-center" ref={lastDotRef} variants={dotVariants}></motion.div>
-          <div className="timeline-empty"></div>
         </motion.div>
 
       </div>

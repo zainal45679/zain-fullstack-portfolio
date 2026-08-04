@@ -1637,22 +1637,23 @@ p {
   
   .timeline-wrapper {
     padding-left: 2px !important;
+    padding-right: 6px !important;
   }
 
-  /* Shift line and dot closer to the left edge */
+  /* Shift line and dot closer to the left edge by 10px */
   .timeline-center-line { 
-    left: 17px !important; 
+    left: 7px !important; 
   }
   .timeline-dot-center { 
-    left: 16px !important; 
+    left: 6px !important; 
     width: 14px !important; 
     height: 14px !important; 
     border-width: 3px !important; 
   }
   
   .timeline-content { 
-    width: calc(100% - 34px) !important;
-    margin-left: 34px !important;
+    width: calc(100% - 24px) !important;
+    margin-left: 24px !important;
     padding: 24px 20px !important; 
     text-align: left !important;
   }

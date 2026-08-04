@@ -167,7 +167,7 @@ const StoryExperience = () => {
     <div id="experience" style={{ backgroundColor: '#ffffff', width: '100%', overflow: 'hidden' }}>
       
       {/* Section Header */}
-      <div className="container experience-header" style={{ maxWidth: '1400px', padding: '24px 38px 0 38px' }}>
+      <div className="container experience-header" style={{ maxWidth: '1400px', padding: '24px 48px 0 48px' }}>
         <div className="approach-top-bar" style={{ color: '#111', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '24px', marginBottom: '24px' }}>
           <div className="approach-label">
             <div className="approach-label-square" style={{ backgroundColor: '#111' }}></div>

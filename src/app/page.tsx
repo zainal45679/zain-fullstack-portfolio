@@ -29,7 +29,8 @@ import { MdDesignServices, MdPhone } from "react-icons/md";
 const tools = [
   "Next.js", "React.js", "Node.js", "Express.js", "MongoDB", "PostgreSQL", 
   "Tailwind CSS", "TypeScript", "JavaScript", "Python", 
-  "Adobe Illustrator", "Adobe InDesign", "Photoshop", "Premiere Pro"
+  "Adobe Illustrator", "Adobe InDesign", "Photoshop", "Premiere Pro",
+  "Claude", "Antigravity"
 ];
 
 // Duplicate for infinite marquee effect
@@ -990,6 +991,8 @@ export default function Home() {
                 <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#FF6C37', borderRadius:'50%'}}>P</div> Postman</div>
                 <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#635BFF'}}>S</div> Stripe API</div>
                 <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#150458'}}>Pd</div> Pandas</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#D97757', color:'#fff'}}>C</div> Claude</div>
+                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#4A90E2', color:'#fff'}}>Ag</div> Antigravity</div>
               </div>
             </motion.div>
 

@@ -20,7 +20,12 @@ import {
   SiTypescript,
   SiHtml5,
   SiCss,
-  SiBootstrap
+  SiBootstrap,
+  SiPostgresql,
+  SiVisualstudiocode,
+  SiPostman,
+  SiStripe,
+  SiPandas
 } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import { MdDesignServices, MdPhone } from "react-icons/md";
@@ -960,7 +965,7 @@ export default function Home() {
                 <div className="skill-item"><SiNodedotjs className="skill-icon" color="#339933" /> Node.js</div>
                 <div className="skill-item"><SiExpress className="skill-icon" color="#fff" /> Express.js</div>
                 <div className="skill-item"><SiMongodb className="skill-icon" color="#47A248" /> MongoDB</div>
-                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#336791'}}>Pg</div> PostgreSQL</div>
+                <div className="skill-item"><SiPostgresql className="skill-icon" color="#336791" /> PostgreSQL</div>
                 <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#003B57'}}>SQL</div> SQL</div>
               </div>
             </motion.div>
@@ -987,10 +992,10 @@ export default function Home() {
               </h3>
               <div className="skills-list">
                 <div className="skill-item"><SiGithub className="skill-icon" color="#fff" /> Git & GitHub</div>
-                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#007ACC'}}>{`</>`}</div> VS Code</div>
-                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#FF6C37', borderRadius:'50%'}}>P</div> Postman</div>
-                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#635BFF'}}>S</div> Stripe API</div>
-                <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#150458'}}>Pd</div> Pandas</div>
+                <div className="skill-item"><SiVisualstudiocode className="skill-icon" color="#007ACC" /> VS Code</div>
+                <div className="skill-item"><SiPostman className="skill-icon" color="#FF6C37" /> Postman</div>
+                <div className="skill-item"><SiStripe className="skill-icon" color="#635BFF" /> Stripe API</div>
+                <div className="skill-item"><SiPandas className="skill-icon" color="#150458" /> Pandas</div>
                 <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#D97757', color:'#fff'}}>C</div> Claude</div>
                 <div className="skill-item"><div className="custom-icon" style={{backgroundColor:'#4A90E2', color:'#fff'}}>Ag</div> Antigravity</div>
               </div>
